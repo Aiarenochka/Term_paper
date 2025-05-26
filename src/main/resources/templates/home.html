@@ -1,71 +1,133 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="uk">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <title>Домашня бібліотека</title>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.5/dist/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/webjars/bootstrap-icons/1.11.3/font/bootstrap-icons.css}" />
     <style>
         body {
-            background: #f0f2f5;
-            font-family: 'Arial', sans-serif;
-            padding: 40px 0;
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        .container {
+        .main-container {
             max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
         }
-        h1 {
+        .header {
             text-align: center;
-            margin-bottom: 40px;
-            font-weight: 700;
-            color: #333;
+            margin-bottom: 2.5rem;
         }
-        .card {
-            cursor: pointer;
-            transition: box-shadow 0.3s ease;
+        .header h1 {
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+        .header .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+        .feature-card {
             border-radius: 12px;
-            margin-bottom: 20px;
-            padding: 20px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
             background: white;
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 1.5rem;
             text-decoration: none;
-            color: #222;
+            color: #2c3e50;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
         }
-        .card:hover {
-            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
-            text-decoration: none;
+        .feature-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            color: #0d6efd;
         }
-        .card i {
+        .feature-icon {
             font-size: 2rem;
             color: #0d6efd;
-            min-width: 40px;
-            text-align: center;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(13, 110, 253, 0.1);
+            border-radius: 50%;
+            transition: all 0.3s ease;
         }
-        .card span {
-            font-size: 1.3rem;
+        .feature-card:hover .feature-icon {
+            background: #0d6efd;
+            color: white;
+        }
+        .feature-text {
+            flex: 1;
+        }
+        .feature-text h3 {
             font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        .feature-text p {
+            color: #7f8c8d;
+            margin-bottom: 0;
+            font-size: 0.9rem;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: #7f8c8d;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>📚 Домашня бібліотека</h1>
+<div class="main-container card-shadow">
+    <div class="header">
+        <h1><i class="bi bi-book-half"></i> Домашня бібліотека</h1>
+        <div class="subtitle">Керуйте своєю колекцією книг</div>
+    </div>
 
-    <a href="/books" class="card">
-        <i class="bi bi-book"></i>
-        <span>Переглянути всі книги</span>
-    </a>
-    <a href="/books/statistics" class="card">
-        <i class="bi bi-graph-up"></i>
-        <span>Статистика</span>
-    </a>
-    <a href="/authors" class="card">
-        <i class="bi bi-pen"></i>
-        <span>Автори та їх книги</span>
-    </a>
+    <div class="features">
+        <a href="/books" class="feature-card">
+            <div class="feature-icon">
+                <i class="bi bi-book"></i>
+            </div>
+            <div class="feature-text">
+                <h3>Всі книги</h3>
+                <p>Переглянути повний список книг у бібліотеці</p>
+            </div>
+            <i class="bi bi-chevron-right"></i>
+        </a>
 
+        <a href="/books/statistics" class="feature-card">
+            <div class="feature-icon">
+                <i class="bi bi-graph-up"></i>
+            </div>
+            <div class="feature-text">
+                <h3>Статистика</h3>
+                <p>Аналітика та метрики вашої бібліотеки</p>
+            </div>
+            <i class="bi bi-chevron-right"></i>
+        </a>
+
+        <a href="/authors" class="feature-card">
+            <div class="feature-icon">
+                <i class="bi bi-pen"></i>
+            </div>
+            <div class="feature-text">
+                <h3>Автори та книги</h3>
+                <p>Перегляд книг за авторами</p>
+            </div>
+            <i class="bi bi-chevron-right"></i>
+        </a>
+    </div>
+
+    <div class="footer">
+        <p>Домашня бібліотека © 2025</p>
+    </div>
 </div>
 </body>
 </html>

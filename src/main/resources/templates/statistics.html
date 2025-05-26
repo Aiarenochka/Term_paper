@@ -4,12 +4,18 @@
     <meta charset="UTF-8">
     <title>Статистика бібліотеки</title>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.5/dist/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap-icons/1.11.3/font/bootstrap-icons.css}" />
     <style>
+        body {
+            background-color: #f8f9fa;
+        }
         .stat-card {
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            padding: 20px;
-            margin-bottom: 20px;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            background: white;
+            height: 100%;
         }
         .highlight {
             font-weight: bold;
@@ -19,70 +25,106 @@
             list-style-type: none;
             padding-left: 0;
         }
+        .book-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        .card-shadow {
+            box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
+        }
+        .stat-value {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body class="container mt-4">
-<h1 class="mb-4">📊 Статистика бібліотеки</h1>
-
-<div class="mb-4">
-    <a th:href="@{/books}" class="btn btn-secondary">
-        ⬅️ Повернутися до списку книг
-    </a>
-    <a th:href="@{/}" class="btn btn-outline-primary ms-2">
-        🏠 Повернутися на головну сторінку
-    </a>
-</div>
-
-<div class="row">
-    <div class="col-md-6">
-        <div class="stat-card bg-light">
-            <h3>Загальні дані</h3>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item bg-light">
-                    Кількість усіх книг: <span class="highlight" th:text="${totalBooks}">50</span>
-                </li>
-                <li class="list-group-item bg-light">
-                    Прочитано книг: <span class="highlight" th:text="${readBooks}">35</span>
-                </li>
-                <li class="list-group-item bg-light">
-                    Непрочитаних: <span class="highlight" th:text="${unreadBooks}">15</span>
-                </li>
-                <li class="list-group-item bg-light">
-                    Середня оцінка: <span class="highlight" th:text="${avgRating}">4.2</span>
-                </li>
-            </ul>
+<div class="card card-shadow p-4 mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">📊 Статистика бібліотеки</h1>
+        <div>
+            <a th:href="@{/books}" class="btn btn-secondary">
+                <i class="bi bi-book"></i> До списку книг
+            </a>
+            <a th:href="@{/}" class="btn btn-outline-primary ms-2">
+                <i class="bi bi-house"></i> На головну
+            </a>
         </div>
     </div>
 
-    <div class="col-md-6">
-        <div class="stat-card bg-light">
-            <h3>Рейтинги</h3>
-            <div class="mb-3">
-                <h5>Найвища оцінка (5★)</h5>
-                <ul class="book-list" th:if="${not #lists.isEmpty(topRatedBooks)}">
-                    <li th:each="book : ${topRatedBooks}">
-                        <span th:text="${book?.title ?: 'Без назви'}">1984</span>
-                        <span th:if="${book?.author != null and not #strings.isEmpty(book.author)}"
-                              th:text="' - ' + ${book.author}"></span>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="stat-card">
+                <h3 class="mb-4"><i class="bi bi-clipboard-data"></i> Загальні дані</h3>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Кількість усіх книг:</span>
+                        <span class="stat-value highlight" th:text="${totalBooks}">50</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Прочитано книг:</span>
+                        <span class="stat-value highlight" th:text="${readBooks}">35</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Непрочитаних:</span>
+                        <span class="stat-value highlight" th:text="${unreadBooks}">15</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Середня оцінка:</span>
+                        <span class="stat-value highlight" th:text="${avgRating}">4.2</span>
                     </li>
                 </ul>
-                <p th:if="${#lists.isEmpty(topRatedBooks)}">Немає книг з оцінкою 5</p>
             </div>
+        </div>
 
-            <div>
-                <h5>Найнижча оцінка (1★)</h5>
-                <ul class="book-list" th:if="${not #lists.isEmpty(lowRatedBooks)}">
-                    <li th:each="book : ${lowRatedBooks}">
-                        <span th:text="${book?.title ?: 'Без назви'}">Назва книги</span>
-                        <span th:if="${book?.author != null and not #strings.isEmpty(book.author)}"
-                              th:text="' - ' + ${book.author}"></span>
-                    </li>
-                </ul>
-                <p th:if="${#lists.isEmpty(lowRatedBooks)}">Немає книг з оцінкою 1</p>
+        <div class="col-md-6">
+            <div class="stat-card">
+                <h3 class="mb-4"><i class="bi bi-star-fill"></i> Рейтинги</h3>
+
+                <div class="mb-4">
+                    <h5 class="d-flex align-items-center">
+                        <i class="bi bi-trophy-fill text-warning me-2"></i>
+                        Найвища оцінка (5★)
+                    </h5>
+                    <ul class="book-list" th:if="${not #lists.isEmpty(topRatedBooks)}">
+                        <li th:each="book : ${topRatedBooks}" class="d-flex justify-content-between">
+                                <span>
+                                    <span th:text="${book?.title ?: 'Без назви'}">1984</span>
+                                    <span th:if="${book?.author != null and not #strings.isEmpty(book.author)}"
+                                          th:text="' - ' + ${book.author}"
+                                          class="text-muted small"></span>
+                                </span>
+                            <span class="badge bg-success">★5</span>
+                        </li>
+                    </ul>
+                    <div th:if="${#lists.isEmpty(topRatedBooks)}" class="alert alert-warning">
+                        Немає книг з оцінкою 5
+                    </div>
+                </div>
+
+                <div>
+                    <h5 class="d-flex align-items-center">
+                        <i class="bi bi-emoji-frown-fill text-danger me-2"></i>
+                        Найнижча оцінка (1★)
+                    </h5>
+                    <ul class="book-list" th:if="${not #lists.isEmpty(lowRatedBooks)}">
+                        <li th:each="book : ${lowRatedBooks}" class="d-flex justify-content-between">
+                                <span>
+                                    <span th:text="${book?.title ?: 'Без назви'}">Назва книги</span>
+                                    <span th:if="${book?.author != null and not #strings.isEmpty(book.author)}"
+                                          th:text="' - ' + ${book.author}"
+                                          class="text-muted small"></span>
+                                </span>
+                            <span class="badge bg-danger">★1</span>
+                        </li>
+                    </ul>
+                    <div th:if="${#lists.isEmpty(lowRatedBooks)}" class="alert alert-warning">
+                        Немає книг з оцінкою 1
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
 </body>
 </html>

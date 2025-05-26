@@ -40,7 +40,8 @@
     "pages": 311,
     "year": 1932,
     "genre": "Dystopia",
-    "rating": 1
+    "rating": 1,
+    "readStatus": "Прочитано"
   },
   {
     "id": 5,
@@ -50,7 +51,8 @@
     "pages": 249,
     "year": 1953,
     "genre": "Sci-Fi",
-    "rating": 2
+    "rating": 2,
+    "readStatus": "Прочитано"
   },
   {
     "id": 6,
@@ -80,7 +82,8 @@
     "pages": 222,
     "year": 1950,
     "genre": "Sci-Fi",
-    "rating": 0
+    "rating": 0,
+    "readStatus": "У процесі"
   },
   {
     "id": 9,
@@ -110,7 +113,8 @@
     "pages": 311,
     "year": 1985,
     "genre": "Dystopia",
-    "rating": 0
+    "rating": 0,
+    "readStatus": "У процесі"
   },
   {
     "id": 12,
