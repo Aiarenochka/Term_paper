@@ -1,0 +1,155 @@
+[
+  {
+    "id": 1,
+    "title": "The Catcher in the Rye",
+    "author": "J.D. Salinger",
+    "publisher": "Little, Brown and Company",
+    "pages": 277,
+    "year": 1951,
+    "genre": "Fiction",
+    "rating": 3,
+    "readStatus": "У процесі"
+  },
+  {
+    "id": 2,
+    "title": "1984",
+    "author": "George Orwell",
+    "publisher": "Secker \u0026 Warburg",
+    "pages": 328,
+    "year": 1949,
+    "genre": "Dystopia",
+    "rating": 1,
+    "readStatus": "Не прочитано"
+  },
+  {
+    "id": 3,
+    "title": "To Kill a Mockingbird",
+    "author": "Harper Lee",
+    "publisher": "J.B. Lippincott \u0026 Co.",
+    "pages": 281,
+    "year": 1960,
+    "genre": "Drama",
+    "rating": 1,
+    "readStatus": "У процесі"
+  },
+  {
+    "id": 4,
+    "title": "Brave New World",
+    "author": "Aldous Huxley",
+    "publisher": "Chatto \u0026 Windus",
+    "pages": 311,
+    "year": 1932,
+    "genre": "Dystopia",
+    "rating": 0
+  },
+  {
+    "id": 5,
+    "title": "Fahrenheit 451",
+    "author": "Ray Bradbury",
+    "publisher": "Ballantine Books",
+    "pages": 249,
+    "year": 1953,
+    "genre": "Sci-Fi",
+    "rating": 0
+  },
+  {
+    "id": 6,
+    "title": "Animal Farm",
+    "author": "George Orwell",
+    "publisher": "Secker \u0026 Warburg",
+    "pages": 112,
+    "year": 1945,
+    "genre": "Dystopia",
+    "rating": 0
+  },
+  {
+    "id": 7,
+    "title": "Go Set a Watchman",
+    "author": "Harper Lee",
+    "publisher": "HarperCollins",
+    "pages": 278,
+    "year": 2015,
+    "genre": "Drama",
+    "rating": 0
+  },
+  {
+    "id": 8,
+    "title": "The Martian Chronicles",
+    "author": "Ray Bradbury",
+    "publisher": "Doubleday",
+    "pages": 222,
+    "year": 1950,
+    "genre": "Sci-Fi",
+    "rating": 0
+  },
+  {
+    "id": 9,
+    "title": "Nine Stories",
+    "author": "J.D. Salinger",
+    "publisher": "Little, Brown and Company",
+    "pages": 198,
+    "year": 1951,
+    "genre": "Fiction",
+    "rating": 0
+  },
+  {
+    "id": 10,
+    "title": "Do Androids Dream of Electric Sheep?",
+    "author": "Philip K. Dick",
+    "publisher": "Doubleday",
+    "pages": 210,
+    "year": 1968,
+    "genre": "Sci-Fi",
+    "rating": 0
+  },
+  {
+    "id": 11,
+    "title": "The Handmaid\u0027s Tale",
+    "author": "Margaret Atwood",
+    "publisher": "McClelland and Stewart",
+    "pages": 311,
+    "year": 1985,
+    "genre": "Dystopia",
+    "rating": 0
+  },
+  {
+    "id": 12,
+    "title": "The Left Hand of Darkness",
+    "author": "Ursula K. Le Guin",
+    "publisher": "Ace Books",
+    "pages": 304,
+    "year": 1969,
+    "genre": "Sci-Fi",
+    "rating": 0
+  },
+  {
+    "id": 13,
+    "title": "Slaughterhouse-Five",
+    "author": "Kurt Vonnegut",
+    "publisher": "Delacorte",
+    "pages": 275,
+    "year": 1969,
+    "genre": "Fiction",
+    "rating": 0
+  },
+  {
+    "id": 14,
+    "title": "Lord of the Flies",
+    "author": "William Golding",
+    "publisher": "Faber and Faber",
+    "pages": 224,
+    "year": 1954,
+    "genre": "Drama",
+    "rating": 0
+  },
+  {
+    "id": 15,
+    "title": "Neuromancer",
+    "author": "William Gibson",
+    "publisher": "Ace Books",
+    "pages": 271,
+    "year": 1984,
+    "genre": "Sci-Fi",
+    "rating": 0
+  }
+]

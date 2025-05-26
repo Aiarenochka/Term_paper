@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="uk">
+<head>
+    <meta charset="UTF-8" />
+    <title>Додати книгу</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.5/dist/css/bootstrap.min.css}" />
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            background: #f9fafb;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        .form-container {
+            background: white;
+            padding: 2.5rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 420px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+        h2.form-title {
+            margin: 0 0 1rem 0;
+            font-weight: 600;
+            font-size: 1.8rem;
+            color: #222;
+            text-align: center;
+            user-select: none;
+        }
+        label {
+            display: flex;
+            flex-direction: column;
+            font-weight: 500;
+            color: #444;
+            font-size: 0.95rem;
+        }
+        input, select {
+            margin-top: 0.35rem;
+            padding: 0.45rem 0.65rem;
+            border: 1.8px solid #ced4da;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 6px #a7c7ff;
+        }
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .btn-group .btn {
+            flex: 1;
+            font-weight: 600;
+            padding: 0.5rem 0;
+            border-radius: 6px;
+            transition: background-color 0.25s ease;
+        }
+        .btn-success {
+            background-color: #28a745;
+            border: none;
+            color: white;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+<form th:action="@{/books/add_book}" th:object="${book}" method="post" class="form-container" autocomplete="off">
+    <h2 class="form-title">➕ Додати нову книгу</h2>
+
+    <label>ID:
+        <input type="number" th:field="*{id}" required min="0"
+               value="0"
+               onfocus="if(this.value==='0') this.value='';"
+               onblur="if(this.value==='') this.value='0';" />
+    </label>
+
+    <label>Назва:
+        <input type="text" th:field="*{title}" required />
+    </label>
+
+    <label>Автор:
+        <input type="text" th:field="*{author}" required />
+    </label>
+
+    <label>Видавництво:
+        <input type="text" th:field="*{publisher}" required />
+    </label>
+
+    <label>Сторінки:
+        <input type="number" th:field="*{pages}" required min="1"
+               value="0"
+               onfocus="if(this.value==='0') this.value='';"
+               onblur="if(this.value==='') this.value='0';" />
+    </label>
+
+    <label>Рік:
+        <input type="number" th:field="*{year}" required min="0"
+               value="0"
+               onfocus="if(this.value==='0') this.value='';"
+               onblur="if(this.value==='') this.value='0';" />
+    </label>
+
+    <label>Жанр:
+        <input type="text" th:field="*{genre}" required />
+    </label>
+
+    <div class="btn-group">
+        <button type="submit" class="btn btn-success">Зберегти</button>
+        <a th:href="@{/books}" class="btn btn-secondary">Назад</a>
+    </div>
+</form>
+</body>
+</html>

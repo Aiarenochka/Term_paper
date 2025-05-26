@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="uk">
+<head>
+    <meta charset="UTF-8" />
+    <title>Домашня бібліотека</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.5/dist/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap-icons/1.11.3/font/bootstrap-icons.css}" />
+    <style>
+        body {
+            background: #f0f2f5;
+            font-family: 'Arial', sans-serif;
+            padding: 40px 0;
+        }
+        .container {
+            max-width: 600px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 700;
+            color: #333;
+        }
+        .card {
+            cursor: pointer;
+            transition: box-shadow 0.3s ease;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: white;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            text-decoration: none;
+            color: #222;
+        }
+        .card:hover {
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+            text-decoration: none;
+        }
+        .card i {
+            font-size: 2rem;
+            color: #0d6efd;
+            min-width: 40px;
+            text-align: center;
+        }
+        .card span {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📚 Домашня бібліотека</h1>
+
+    <a href="/books" class="card">
+        <i class="bi bi-book"></i>
+        <span>Переглянути всі книги</span>
+    </a>
+    <a href="/books/statistics" class="card">
+        <i class="bi bi-graph-up"></i>
+        <span>Статистика</span>
+    </a>
+    <a href="/books/ratings" class="card">
+        <i class="bi bi-star"></i>
+        <span>Оцінки і прочитане</span>
+    </a>
+    <a href="/shelves" class="card">
+        <i class="bi bi-bookmarks"></i>
+        <span>Полиці</span>
+    </a>
+</div>
+</body>
+</html>

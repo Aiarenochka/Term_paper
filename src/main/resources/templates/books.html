@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Список книг</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.5/dist/css/bootstrap.min.css}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+
+<body class="container mt-4">
+<h2>📖 Список книг</h2>
+
+<div class="mb-3">
+    <a th:href="@{/books/add_book}" class="btn btn-success">
+        <i class="bi bi-plus-circle"></i> Додати книгу
+    </a>
+</div>
+
+<form method="get" class="row g-3 mb-4">
+    <div class="col-md-3">
+        <label for="genre" class="form-label">Жанр</label>
+        <select id="genre" class="form-select" name="genre">
+            <option value="">Усі</option>
+            <option th:each="g : ${genres}" th:value="${g}" th:text="${g}" th:selected="${genre == g}"></option>
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <label for="read" class="form-label">Прочитано</label>
+        <select id="read" class="form-select" name="read">
+            <option value="">Усі</option>
+            <option value="true" th:selected="${read == 'true'}">Прочитані</option>
+            <option value="false" th:selected="${read == 'false'}">Не прочитані</option>
+        </select>
+    </div>
+
+    <div class="col-md-2">
+        <label for="minRating" class="form-label">Мін. оцінка</label>
+        <select id="minRating" class="form-select" name="minRating">
+            <option value="">Усі</option>
+            <option th:each="i : ${#numbers.sequence(0,5)}"
+                    th:value="${i}" th:text="${i}" th:selected="${minRating == i}"></option>
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <label for="sort" class="form-label">Сортувати за</label>
+        <select id="sort" class="form-select" name="sort">
+            <option value="">Без сортування</option>
+            <option value="title" th:selected="${sort == 'title'}">Назвою</option>
+            <option value="year" th:selected="${sort == 'year'}">Роком</option>
+            <option value="rating" th:selected="${sort == 'rating'}">Оцінкою</option>
+        </select>
+    </div>
+
+    <div class="col-md-1 d-flex align-items-end">
+        <button class="btn btn-primary w-100" type="submit">Фільтр</button>
+    </div>
+</form>
+
+<table class="table table-bordered table-striped align-middle">
+    <thead class="table-light">
+    <tr>
+        <th>ID</th><th>Назва</th><th>Автор</th><th>Жанр</th>
+        <th>Рік</th><th>Оцінка</th><th>Статус</th><th>Дія</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${books}">
+        <td th:text="${book.id}"></td>
+        <td th:text="${book.title}"></td>
+        <td th:text="${book.author}"></td>
+        <td th:text="${book.genre}"></td>
+        <td th:text="${book.year}"></td>
+
+        <td>
+            <form th:action="@{/books/rate}" method="post" class="d-flex align-items-center gap-2">
+                <input type="hidden" name="id" th:value="${book.id}"/>
+                <input type="number" min="0" max="5" name="rating"
+                       th:value="${book.rating}" class="form-control form-control-sm"
+                       style="width: 70px;" />
+                <button type="submit" class="btn btn-outline-primary btn-sm">💾</button>
+            </form>
+        </td>
+
+        <td>
+            <form th:action="@{/books/updateReadStatus}" method="post">
+                <input type="hidden" name="id" th:value="${book.id}" />
+                <select name="readStatus" class="form-select form-select-sm"
+                        onchange="this.form.submit()">
+                    <option value="Не прочитано" th:selected="${book.readStatus == 'Не прочитано'}">Не прочитано</option>
+                    <option value="У процесі" th:selected="${book.readStatus == 'У процесі'}">У процесі</option>
+                    <option value="Прочитано" th:selected="${book.readStatus == 'Прочитано'}">Прочитано</option>
+                </select>
+            </form>
+        </td>
+
+        <td class="d-flex flex-column gap-2">
+            <a th:href="@{'/books/edit/' + ${book.id}}" class="btn btn-warning btn-sm">
+                ✏️ Редагувати
+            </a>
+            <a th:href="@{'/books/delete/' + ${book.id}}"
+               class="btn btn-danger btn-sm"
+               th:onclick="'return confirm(\'Видалити книгу з ID ' + ${book.id} + '?\')'">
+                🗑️ Видалити
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<a class="btn btn-secondary mt-3" th:href="@{/}">⬅️ На головну</a>
+</body>
+</html>
