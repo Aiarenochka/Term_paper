@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Автори та їх книги</title>
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.5/dist/css/bootstrap.min.css}" />
+  <style>
+    .author-card {
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+      background: white;
+    }
+    .author-name {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #0d6efd;
+      margin-bottom: 15px;
+    }
+    .book-item {
+      padding: 8px 15px;
+      margin-bottom: 5px;
+      background: #f8f9fa;
+      border-radius: 5px;
+    }
+    .book-count {
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body class="container mt-4">
+<h1 class="mb-4">✍️ Автори та їх книги</h1>
+
+<div class="mb-4">
+  <a th:href="@{/books}" class="btn btn-secondary">
+    ⬅️ Повернутися до списку книг
+  </a>
+  <a th:href="@{/}" class="btn btn-outline-primary ms-2">
+    🏠 Головна сторінка
+  </a>
+</div>
+
+<div th:if="${#maps.isEmpty(authorsWithBooks)}">
+  <div class="alert alert-info">Немає інформації про авторів</div>
+</div>
+
+<div th:unless="${#maps.isEmpty(authorsWithBooks)}" class="row">
+  <div class="col-md-6" th:each="entry : ${authorsWithBooks}">
+    <div class="author-card">
+      <div class="author-name" th:text="${entry.key}">Ім'я автора</div>
+      <div class="book-count" th:text="'Книг: ' + ${entry.value.size()}"></div>
+
+      <div class="mt-3">
+        <div class="book-item" th:each="book : ${entry.value}">
+          <span th:text="${book.title ?: 'Без назви'}"></span>
+          <span th:if="${book.year != 0}"
+                th:text="' (' + ${book.year} + ')'"
+                class="text-muted small"></span>
+          <span th:if="${book.rating > 0}"
+                th:text="' ★' + ${book.rating}"
+                class="text-warning small"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Статистика бібліотеки</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.5/dist/css/bootstrap.min.css}" />
+    <style>
+        .stat-card {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .highlight {
+            font-weight: bold;
+            color: #0d6efd;
+        }
+        .book-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+    </style>
+</head>
+<body class="container mt-4">
+<h1 class="mb-4">📊 Статистика бібліотеки</h1>
+
+<div class="mb-4">
+    <a th:href="@{/books}" class="btn btn-secondary">
+        ⬅️ Повернутися до списку книг
+    </a>
+    <a th:href="@{/}" class="btn btn-outline-primary ms-2">
+        🏠 Повернутися на головну сторінку
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="stat-card bg-light">
+            <h3>Загальні дані</h3>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item bg-light">
+                    Кількість усіх книг: <span class="highlight" th:text="${totalBooks}">50</span>
+                </li>
+                <li class="list-group-item bg-light">
+                    Прочитано книг: <span class="highlight" th:text="${readBooks}">35</span>
+                </li>
+                <li class="list-group-item bg-light">
+                    Непрочитаних: <span class="highlight" th:text="${unreadBooks}">15</span>
+                </li>
+                <li class="list-group-item bg-light">
+                    Середня оцінка: <span class="highlight" th:text="${avgRating}">4.2</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="stat-card bg-light">
+            <h3>Рейтинги</h3>
+            <div class="mb-3">
+                <h5>Найвища оцінка (5★)</h5>
+                <ul class="book-list" th:if="${not #lists.isEmpty(topRatedBooks)}">
+                    <li th:each="book : ${topRatedBooks}">
+                        <span th:text="${book?.title ?: 'Без назви'}">1984</span>
+                        <span th:if="${book?.author != null and not #strings.isEmpty(book.author)}"
+                              th:text="' - ' + ${book.author}"></span>
+                    </li>
+                </ul>
+                <p th:if="${#lists.isEmpty(topRatedBooks)}">Немає книг з оцінкою 5</p>
+            </div>
+
+            <div>
+                <h5>Найнижча оцінка (1★)</h5>
+                <ul class="book-list" th:if="${not #lists.isEmpty(lowRatedBooks)}">
+                    <li th:each="book : ${lowRatedBooks}">
+                        <span th:text="${book?.title ?: 'Без назви'}">Назва книги</span>
+                        <span th:if="${book?.author != null and not #strings.isEmpty(book.author)}"
+                              th:text="' - ' + ${book.author}"></span>
+                    </li>
+                </ul>
+                <p th:if="${#lists.isEmpty(lowRatedBooks)}">Немає книг з оцінкою 1</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

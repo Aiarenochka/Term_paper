@@ -173,4 +173,50 @@ public class BookController {
 
         return book;
     }
+
+    @GetMapping("/books/statistics")
+    public String showStatistics(Model model) {
+        List<Book> allBooks = bookRepository.load();
+
+        model.addAttribute("totalBooks", allBooks.size());
+
+        long readCount = allBooks.stream()
+                .filter(b -> "Прочитано".equals(b.getReadStatus()))
+                .count();
+        model.addAttribute("readBooks", readCount);
+        model.addAttribute("unreadBooks", allBooks.size() - readCount);
+
+        // Розрахунок середньої оцінки (без нулів)
+        double avgRating = allBooks.stream()
+                .filter(b -> b.getRating() > 0) // Ігноруємо книги з rating = 0
+                .mapToInt(Book::getRating)
+                .average()
+                .orElse(0.0);
+        model.addAttribute("avgRating", String.format("%.1f", avgRating));
+
+        // Книги з оцінкою 5 (без змін)
+        List<Book> topRated = allBooks.stream()
+                .filter(b -> b.getRating() == 5)
+                .collect(Collectors.toList());
+        model.addAttribute("topRatedBooks", topRated);
+
+        // Книги з оцінкою 1 (без змін)
+        List<Book> lowRated = allBooks.stream()
+                .filter(b -> b.getRating() == 1)
+                .collect(Collectors.toList());
+        model.addAttribute("lowRatedBooks", lowRated);
+
+        return "statistics";
+    }
+
+    @GetMapping("/authors")
+    public String showAuthors(Model model) {
+        // Групуємо книги по авторах, ігноруючи книги без автора
+        Map<String, List<Book>> authorsWithBooks = books.stream()
+                .filter(book -> book.getAuthor() != null && !book.getAuthor().isEmpty())
+                .collect(Collectors.groupingBy(Book::getAuthor));
+
+        model.addAttribute("authorsWithBooks", authorsWithBooks);
+        return "authors";
+    }
 }

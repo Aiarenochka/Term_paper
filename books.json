@@ -7,8 +7,8 @@
     "pages": 277,
     "year": 1951,
     "genre": "Fiction",
-    "rating": 3,
-    "readStatus": "У процесі"
+    "rating": 5,
+    "readStatus": "Прочитано"
   },
   {
     "id": 2,
@@ -18,8 +18,8 @@
     "pages": 328,
     "year": 1949,
     "genre": "Dystopia",
-    "rating": 1,
-    "readStatus": "Не прочитано"
+    "rating": 5,
+    "readStatus": "Прочитано"
   },
   {
     "id": 3,
@@ -29,8 +29,8 @@
     "pages": 281,
     "year": 1960,
     "genre": "Drama",
-    "rating": 1,
-    "readStatus": "У процесі"
+    "rating": 5,
+    "readStatus": "Прочитано"
   },
   {
     "id": 4,
@@ -40,7 +40,7 @@
     "pages": 311,
     "year": 1932,
     "genre": "Dystopia",
-    "rating": 0
+    "rating": 1
   },
   {
     "id": 5,
@@ -50,7 +50,7 @@
     "pages": 249,
     "year": 1953,
     "genre": "Sci-Fi",
-    "rating": 0
+    "rating": 2
   },
   {
     "id": 6,

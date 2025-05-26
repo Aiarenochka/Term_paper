@@ -4,115 +4,181 @@
     <meta charset="UTF-8">
     <title>Список книг</title>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.5/dist/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap-icons/1.11.3/font/bootstrap-icons.css}" />
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .book-table {
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        .table-header {
+            background-color: #0d6efd;
+            color: white;
+        }
+        .action-buttons {
+            min-width: 150px;
+        }
+        .rating-form {
+            min-width: 120px;
+        }
+        .status-select {
+            min-width: 140px;
+        }
+        .card-shadow {
+            box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
+        }
+        .btn-success {
+            background-color: #198754;
+            border-color: #198754;
+        }
+        .btn-info {
+            background-color: #0dcaf0;
+            border-color: #0dcaf0;
+        }
+    </style>
 </head>
 
 <body class="container mt-4">
-<h2>📖 Список книг</h2>
-
-<div class="mb-3">
-    <a th:href="@{/books/add_book}" class="btn btn-success">
-        <i class="bi bi-plus-circle"></i> Додати книгу
-    </a>
-</div>
-
-<form method="get" class="row g-3 mb-4">
-    <div class="col-md-3">
-        <label for="genre" class="form-label">Жанр</label>
-        <select id="genre" class="form-select" name="genre">
-            <option value="">Усі</option>
-            <option th:each="g : ${genres}" th:value="${g}" th:text="${g}" th:selected="${genre == g}"></option>
-        </select>
+<div class="card card-shadow p-4 mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">📖 Список книг</h2>
+        <div>
+            <a th:href="@{/books/add_book}" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i> Додати книгу
+            </a>
+            <a th:href="@{/authors}" class="btn btn-info ms-2">
+                <i class="bi bi-pen"></i> Автори
+            </a>
+        </div>
     </div>
 
-    <div class="col-md-3">
-        <label for="readStatus" class="form-label">Статус прочитання</label>
-        <select id="readStatus" class="form-select" name="readStatus">
-            <option value="">Усі</option>
-            <option value="true" th:selected="${readStatus == 'true'}">Прочитані</option>
-            <option value="false" th:selected="${readStatus == 'false'}">Не прочитані</option>
-        </select>
-    </div>
-
-    <div class="col-md-2">
-        <label for="minRating" class="form-label">Мін. оцінка</label>
-        <select id="minRating" class="form-select" name="minRating">
-            <option value="">Усі</option>
-            <option th:each="i : ${#numbers.sequence(0,5)}"
-                    th:value="${i}" th:text="${i}" th:selected="${minRating == i}"></option>
-        </select>
-    </div>
-
-    <div class="col-md-3">
-        <label for="sort" class="form-label">Сортувати за</label>
-        <select id="sort" class="form-select" name="sort">
-            <option value="">Без сортування</option>
-            <option value="title" th:selected="${sort == 'title'}">Назвою</option>
-            <option value="year" th:selected="${sort == 'year'}">Роком</option>
-            <option value="rating" th:selected="${sort == 'rating'}">Оцінкою</option>
-        </select>
-    </div>
-
-    <div class="col-md-1 d-flex align-items-end">
-        <button class="btn btn-primary w-100" type="submit">Фільтр</button>
-    </div>
-</form>
-
-<table class="table table-bordered table-striped align-middle">
-    <thead class="table-light">
-    <tr>
-        <th>ID</th><th>Назва</th><th>Автор</th><th>Жанр</th>
-        <th>Рік</th><th>Оцінка</th><th>Статус</th><th>Дія</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="book : ${books}">
-        <td th:text="${book.id}"></td>
-        <td th:text="${book.title}"></td>
-        <td th:text="${book.author}"></td>
-        <td th:text="${book.genre}"></td>
-        <td th:text="${book.year}"></td>
-
-        <td>
-            <form th:action="@{/books/rate}" method="post" class="d-flex align-items-center gap-2">
-                <input type="hidden" name="id" th:value="${book.id}"/>
-                <label for="rating-${book.id}" class="visually-hidden">Оцінка для книги</label>
-                <input type="number" min="0" max="5" name="rating"
-                       th:value="${book.rating}" class="form-control form-control-sm"
-                       style="width: 70px;" id="rating-${book.id}" aria-label="Оцінка книги"/>
-                <button type="submit" class="btn btn-outline-primary btn-sm" aria-label="Зберегти оцінку">💾</button>
-            </form>
-        </td>
-
-        <td>
-            <form th:action="@{/books/updateReadStatus}" method="post">
-                <input type="hidden" name="id" th:value="${book.id}" />
-                <label for="readStatus-${book.id}" class="visually-hidden">Статус прочитання для книги</label>
-                <select name="readStatus" class="form-select form-select-sm"
-                        onchange="this.form.submit()" id="readStatus-${book.id}" aria-label="Статус прочитання">
-                    <option value="Не прочитано" th:selected="${book.readStatus == 'Не прочитано'}">Не прочитано</option>
-                    <option value="У процесі" th:selected="${book.readStatus == 'У процесі'}">У процесі</option>
-                    <option value="Прочитано" th:selected="${book.readStatus == 'Прочитано'}">Прочитано</option>
+    <div class="card card-shadow mb-4 p-3">
+        <form method="get" class="row g-3">
+            <div class="col-md-3">
+                <label for="genre" class="form-label">Жанр</label>
+                <select id="genre" class="form-select" name="genre">
+                    <option value="">Усі</option>
+                    <option th:each="g : ${genres}" th:value="${g}" th:text="${g}" th:selected="${genre == g}"></option>
                 </select>
-            </form>
-        </td>
+            </div>
 
-        <td class="d-flex flex-column gap-2">
-            <a th:href="@{'/books/edit/' + ${book.id}}" class="btn btn-warning btn-sm" aria-label="Редагувати книгу">
-                ✏️ Редагувати
-            </a>
-            <a th:href="@{'/books/delete/' + ${book.id}}"
-               class="btn btn-danger btn-sm"
-               th:onclick="'return confirm(\'Видалити книгу з ID ' + ${book.id} + '?\')'"
-               aria-label="Видалити книгу">
-                🗑️ Видалити
-            </a>
-        </td>
-    </tr>
-    </tbody>
-</table>
+            <div class="col-md-3">
+                <label for="readStatus" class="form-label">Статус</label>
+                <select id="readStatus" class="form-select" name="readStatus">
+                    <option value="">Усі</option>
+                    <option value="true" th:selected="${readStatus == 'true'}">Прочитані</option>
+                    <option value="false" th:selected="${readStatus == 'false'}">Не прочитані</option>
+                </select>
+            </div>
 
-<a class="btn btn-secondary mt-3" th:href="@{/}" aria-label="Повернутися на головну сторінку">
-    ⬅️ На головну
-</a>
+            <div class="col-md-2">
+                <label for="minRating" class="form-label">Мін. оцінка</label>
+                <select id="minRating" class="form-select" name="minRating">
+                    <option value="">Усі</option>
+                    <option th:each="i : ${#numbers.sequence(0,5)}"
+                            th:value="${i}" th:text="${i}" th:selected="${minRating == i}"></option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label for="sort" class="form-label">Сортувати за</label>
+                <select id="sort" class="form-select" name="sort">
+                    <option value="">Без сортування</option>
+                    <option value="title" th:selected="${sort == 'title'}">Назвою</option>
+                    <option value="year" th:selected="${sort == 'year'}">Роком</option>
+                    <option value="rating" th:selected="${sort == 'rating'}">Оцінкою</option>
+                </select>
+            </div>
+
+            <div class="col-md-1 d-flex align-items-end">
+                <button class="btn btn-primary w-100" type="submit">
+                    <i class="bi bi-funnel"></i> Фільтр
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover book-table">
+            <thead class="table-header">
+            <tr>
+                <th>ID</th>
+                <th>Назва</th>
+                <th>Автор</th>
+                <th>Жанр</th>
+                <th>Рік</th>
+                <th>Оцінка</th>
+                <th>Статус</th>
+                <th class="action-buttons">Дія</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="book : ${books}" class="align-middle">
+                <td th:text="${book.id}" class="fw-bold"></td>
+                <td th:text="${book.title}"></td>
+                <td>
+                    <span th:if="${book.author}" th:text="${book.author}"></span>
+                    <span th:unless="${book.author}" class="text-muted">Не вказано</span>
+                </td>
+                <td>
+                    <span th:if="${book.genre}" th:text="${book.genre}"></span>
+                    <span th:unless="${book.genre}" class="text-muted">Не вказано</span>
+                </td>
+                <td th:text="${book.year}"></td>
+
+                <td class="rating-form">
+                    <form th:action="@{/books/rate}" method="post" class="d-flex align-items-center gap-2">
+                        <input type="hidden" name="id" th:value="${book.id}"/>
+                        <input type="number" min="0" max="5" name="rating"
+                               th:value="${book.rating}" class="form-control form-control-sm"
+                               aria-label="Оцінка книги"/>
+                        <button type="submit" class="btn btn-outline-primary btn-sm" aria-label="Зберегти оцінку">
+                            <i class="bi bi-check"></i>
+                        </button>
+                    </form>
+                </td>
+
+                <td class="status-select">
+                    <form th:action="@{/books/updateReadStatus}" method="post">
+                        <input type="hidden" name="id" th:value="${book.id}" />
+                        <select name="readStatus" class="form-select form-select-sm"
+                                onchange="this.form.submit()" aria-label="Статус прочитання">
+                            <option value="Не прочитано" th:selected="${book.readStatus == 'Не прочитано'}">Не прочитано</option>
+                            <option value="У процесі" th:selected="${book.readStatus == 'У процесі'}">У процесі</option>
+                            <option value="Прочитано" th:selected="${book.readStatus == 'Прочитано'}">Прочитано</option>
+                        </select>
+                    </form>
+                </td>
+
+                <td class="action-buttons">
+                    <div class="d-flex gap-2">
+                        <a th:href="@{'/books/edit/' + ${book.id}}" class="btn btn-warning btn-sm" aria-label="Редагувати книгу">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a th:href="@{'/books/delete/' + ${book.id}}"
+                           class="btn btn-danger btn-sm"
+                           th:onclick="'return confirm(\'Видалити книгу з ID ' + ${book.id} + '?\')'"
+                           aria-label="Видалити книгу">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex justify-content-between mt-4">
+        <a class="btn btn-outline-secondary" th:href="@{/}">
+            <i class="bi bi-house"></i> На головну
+        </a>
+        <div class="text-muted">
+            Всього книг: <span th:text="${books.size()}" class="fw-bold"></span>
+        </div>
+    </div>
+</div>
 </body>
 </html>
