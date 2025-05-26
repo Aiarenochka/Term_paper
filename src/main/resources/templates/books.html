@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Список книг</title>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.5/dist/css/bootstrap.min.css}" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 
 <body class="container mt-4">
@@ -26,11 +25,11 @@
     </div>
 
     <div class="col-md-3">
-        <label for="read" class="form-label">Прочитано</label>
-        <select id="read" class="form-select" name="read">
+        <label for="readStatus" class="form-label">Статус прочитання</label>
+        <select id="readStatus" class="form-select" name="readStatus">
             <option value="">Усі</option>
-            <option value="true" th:selected="${read == 'true'}">Прочитані</option>
-            <option value="false" th:selected="${read == 'false'}">Не прочитані</option>
+            <option value="true" th:selected="${readStatus == 'true'}">Прочитані</option>
+            <option value="false" th:selected="${readStatus == 'false'}">Не прочитані</option>
         </select>
     </div>
 
@@ -76,18 +75,20 @@
         <td>
             <form th:action="@{/books/rate}" method="post" class="d-flex align-items-center gap-2">
                 <input type="hidden" name="id" th:value="${book.id}"/>
+                <label for="rating-${book.id}" class="visually-hidden">Оцінка для книги</label>
                 <input type="number" min="0" max="5" name="rating"
                        th:value="${book.rating}" class="form-control form-control-sm"
-                       style="width: 70px;" />
-                <button type="submit" class="btn btn-outline-primary btn-sm">💾</button>
+                       style="width: 70px;" id="rating-${book.id}" aria-label="Оцінка книги"/>
+                <button type="submit" class="btn btn-outline-primary btn-sm" aria-label="Зберегти оцінку">💾</button>
             </form>
         </td>
 
         <td>
             <form th:action="@{/books/updateReadStatus}" method="post">
                 <input type="hidden" name="id" th:value="${book.id}" />
+                <label for="readStatus-${book.id}" class="visually-hidden">Статус прочитання для книги</label>
                 <select name="readStatus" class="form-select form-select-sm"
-                        onchange="this.form.submit()">
+                        onchange="this.form.submit()" id="readStatus-${book.id}" aria-label="Статус прочитання">
                     <option value="Не прочитано" th:selected="${book.readStatus == 'Не прочитано'}">Не прочитано</option>
                     <option value="У процесі" th:selected="${book.readStatus == 'У процесі'}">У процесі</option>
                     <option value="Прочитано" th:selected="${book.readStatus == 'Прочитано'}">Прочитано</option>
@@ -96,12 +97,13 @@
         </td>
 
         <td class="d-flex flex-column gap-2">
-            <a th:href="@{'/books/edit/' + ${book.id}}" class="btn btn-warning btn-sm">
+            <a th:href="@{'/books/edit/' + ${book.id}}" class="btn btn-warning btn-sm" aria-label="Редагувати книгу">
                 ✏️ Редагувати
             </a>
             <a th:href="@{'/books/delete/' + ${book.id}}"
                class="btn btn-danger btn-sm"
-               th:onclick="'return confirm(\'Видалити книгу з ID ' + ${book.id} + '?\')'">
+               th:onclick="'return confirm(\'Видалити книгу з ID ' + ${book.id} + '?\')'"
+               aria-label="Видалити книгу">
                 🗑️ Видалити
             </a>
         </td>
@@ -109,6 +111,8 @@
     </tbody>
 </table>
 
-<a class="btn btn-secondary mt-3" th:href="@{/}">⬅️ На головну</a>
+<a class="btn btn-secondary mt-3" th:href="@{/}" aria-label="Повернутися на головну сторінку">
+    ⬅️ На головну
+</a>
 </body>
 </html>

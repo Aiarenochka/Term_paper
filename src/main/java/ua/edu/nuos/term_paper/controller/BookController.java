@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 public class BookController {
     private final BookService bookService;
     private final BookRepositoryJSONImpl bookRepository;
-
     private List<Book> books;
 
     @Autowired
@@ -29,6 +28,11 @@ public class BookController {
         } catch (Exception e) {
             this.books = new ArrayList<>();
         }
+    }
+
+    @GetMapping("/")
+    public String homePage() {
+        return "home";
     }
 
     @GetMapping("/books")
@@ -63,7 +67,6 @@ public class BookController {
         return "books";
     }
 
-
     @GetMapping("/books/add_book")
     public String showAddBookForm(Model model) {
         model.addAttribute("book", new Book());
@@ -72,10 +75,7 @@ public class BookController {
 
     @PostMapping("/books/add_book")
     public String addBook(@ModelAttribute Book book, RedirectAttributes redirectAttributes) {
-
-        boolean exists = books.stream().anyMatch(b -> b.getId() == book.getId());
-
-        if (exists) {
+        if (books.stream().anyMatch(b -> b.getId() == book.getId())) {
             redirectAttributes.addFlashAttribute("error", "Книга з ID " + book.getId() + " вже існує. Оберіть інший ID.");
             return "redirect:/books/add_book";
         }
@@ -93,87 +93,84 @@ public class BookController {
 
     @GetMapping("/books/delete/{id}")
     public String deleteBook(@PathVariable int id, RedirectAttributes redirectAttributes) {
-        boolean removed = books.removeIf(b -> b.getId() == id);
-        if (removed) {
-            bookRepository.save(books);
-            redirectAttributes.addFlashAttribute("message", "Книга з ID " + id + " успішно видалена.");
-        }
-        else {
-            redirectAttributes.addFlashAttribute("error", "Книгу з ID " + id + " не знайдено.");
-        }
-        return "redirect:/books";
+        return findBookById(id, redirectAttributes)
+                .map(book -> {
+                    books.remove(book);
+                    bookRepository.save(books);
+                    redirectAttributes.addFlashAttribute("message", "Книга з ID " + id + " успішно видалена.");
+                    return "redirect:/books";
+                })
+                .orElseGet(() -> {
+                    redirectAttributes.addFlashAttribute("error", "Книгу з ID " + id + " не знайдено.");
+                    return "redirect:/books";
+                });
     }
 
     @GetMapping("/books/edit/{id}")
     public String showEditBookForm(@PathVariable int id, Model model, RedirectAttributes redirectAttributes) {
-        Optional<Book> optionalBook = books.stream()
-                .filter(b -> b.getId() == id)
-                .findFirst();
-
-        if (optionalBook.isEmpty()) {
-            redirectAttributes.addFlashAttribute("error", "Книга з ID " + id + " не знайдена.");
-            return "redirect:/books";
-        }
-
-        model.addAttribute("book", optionalBook.get());
-        return "edit_book";
+        return findBookById(id, redirectAttributes)
+                .map(book -> {
+                    model.addAttribute("book", book);
+                    return "edit_book";
+                })
+                .orElse("redirect:/books");
     }
 
     @PostMapping("/books/edit/{id}")
     public String editBook(@PathVariable int id, @ModelAttribute Book updatedBook, RedirectAttributes redirectAttributes) {
-        for (int i = 0; i < books.size(); i++) {
-            if (books.get(i).getId() == id) {
-                updatedBook.setId(id);
-                books.set(i, updatedBook);
-                bookRepository.save(books);
-                redirectAttributes.addFlashAttribute("message", "Книга з ID " + id + " успішно оновлена.");
-                return "redirect:/books";
-            }
-        }
-        redirectAttributes.addFlashAttribute("error", "Книга з ID " + id + " не знайдена.");
-        return "redirect:/books";
+        return findBookById(id, redirectAttributes)
+                .map(book -> {
+                    updatedBook.setId(id);
+                    books.set(books.indexOf(book), updatedBook);
+                    bookRepository.save(books);
+                    redirectAttributes.addFlashAttribute("message", "Книга з ID " + id + " успішно оновлена.");
+                    return "redirect:/books";
+                })
+                .orElseGet(() -> {
+                    redirectAttributes.addFlashAttribute("error", "Книга з ID " + id + " не знайдена.");
+                    return "redirect:/books";
+                });
     }
+
     @PostMapping("/books/rate")
     public String rateBook(@RequestParam int id, @RequestParam int rating, RedirectAttributes redirectAttributes) {
-
-        Optional<Book> optionalBook = books.stream()
-                .filter(b -> b.getId() == id)
-                .findFirst();
-
-        if (optionalBook.isEmpty()) {
-            redirectAttributes.addFlashAttribute("error", "Книга з ID " + id + " не знайдена.");
-            return "redirect:/books";
-        }
-
-        Book book = optionalBook.get();
-        if (rating < 0) rating = 0;
-        if (rating > 5) rating = 5;
-
-        book.setRating(rating);
-        bookRepository.save(books);
-
-        redirectAttributes.addFlashAttribute("message", "Рейтинг книги '" + book.getTitle() + "' оновлено.");
-
-        return "redirect:/books";
+        return findBookById(id, redirectAttributes)
+                .map(book -> {
+                    book.setRating(Math.max(0, Math.min(5, rating)));
+                    bookRepository.save(books);
+                    redirectAttributes.addFlashAttribute("message", "Рейтинг книги '" + book.getTitle() + "' оновлено.");
+                    return "redirect:/books";
+                })
+                .orElseGet(() -> {
+                    redirectAttributes.addFlashAttribute("error", "Книга з ID " + id + " не знайдена.");
+                    return "redirect:/books";
+                });
     }
 
     @PostMapping("/books/updateReadStatus")
     public String updateReadStatus(@RequestParam int id, @RequestParam String readStatus, RedirectAttributes redirectAttributes) {
-        Optional<Book> optionalBook = books.stream()
+        return findBookById(id, redirectAttributes)
+                .map(book -> {
+                    book.setReadStatus(readStatus);
+                    bookRepository.save(books);
+                    redirectAttributes.addFlashAttribute("message", "Статус прочитання книги '" + book.getTitle() + "' оновлено.");
+                    return "redirect:/books";
+                })
+                .orElseGet(() -> {
+                    redirectAttributes.addFlashAttribute("error", "Книга з ID " + id + " не знайдена.");
+                    return "redirect:/books";
+                });
+    }
+
+    private Optional<Book> findBookById(int id, RedirectAttributes redirectAttributes) {
+        Optional<Book> book = books.stream()
                 .filter(b -> b.getId() == id)
                 .findFirst();
 
-        if (optionalBook.isEmpty()) {
+        if (book.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Книга з ID " + id + " не знайдена.");
-            return "redirect:/books";
         }
 
-        Book book = optionalBook.get();
-        book.setReadStatus(readStatus);
-        bookRepository.save(books);
-
-        redirectAttributes.addFlashAttribute("message", "Статус прочитання книги '" + book.getTitle() + "' оновлено.");
-        return "redirect:/books";
+        return book;
     }
-
 }
