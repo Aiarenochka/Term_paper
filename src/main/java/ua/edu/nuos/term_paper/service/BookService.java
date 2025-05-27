@@ -71,8 +71,15 @@ public class BookService {
         }
 
         if (readStatus != null && !readStatus.isEmpty()) {
-            stream = stream.filter(book -> readStatus.equals(book.getReadStatus()));
+            stream = stream.filter(book -> {
+                String status = book.getReadStatus();
+                if (status == null || status.isEmpty()) {
+                    status = "Не прочитано";
+                }
+                return status.equalsIgnoreCase(readStatus);
+            });
         }
+
 
         if (minRating != null) {
             stream = stream.filter(book -> book.getRating() >= minRating);

@@ -125,7 +125,8 @@
     "pages": 304,
     "year": 1969,
     "genre": "Sci-Fi",
-    "rating": 0
+    "rating": 0,
+    "readStatus": "Прочитано"
   },
   {
     "id": 13,
