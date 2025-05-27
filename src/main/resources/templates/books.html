@@ -69,8 +69,9 @@
                 <label for="readStatus" class="form-label">Статус</label>
                 <select id="readStatus" class="form-select" name="readStatus">
                     <option value="">Усі</option>
-                    <option value="true" th:selected="${readStatus == 'true'}">Прочитані</option>
-                    <option value="false" th:selected="${readStatus == 'false'}">Не прочитані</option>
+                    <option value="Прочитано" th:selected="${readStatus == 'Прочитано'}">Прочитано</option>
+                    <option value="Не прочитано" th:selected="${readStatus == 'Не прочитано'}">Не прочитано</option>
+                    <option value="У процесі" th:selected="${readStatus == 'У процесі'}">У процесі</option>
                 </select>
             </div>
 
@@ -79,7 +80,7 @@
                 <select id="minRating" class="form-select" name="minRating">
                     <option value="">Усі</option>
                     <option th:each="i : ${#numbers.sequence(0,5)}"
-                            th:value="${i}" th:text="${i}" th:selected="${minRating == i}"></option>
+                            th:value="${i}" th:text="${i}" th:selected="${minRating != null and minRating == i}"></option>
                 </select>
             </div>
 

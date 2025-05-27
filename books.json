@@ -72,7 +72,8 @@
     "pages": 278,
     "year": 2015,
     "genre": "Drama",
-    "rating": 0
+    "rating": 4,
+    "readStatus": "Прочитано"
   },
   {
     "id": 8,
@@ -134,7 +135,8 @@
     "pages": 275,
     "year": 1969,
     "genre": "Fiction",
-    "rating": 0
+    "rating": 0,
+    "readStatus": "Прочитано"
   },
   {
     "id": 14,
@@ -144,7 +146,8 @@
     "pages": 224,
     "year": 1954,
     "genre": "Drama",
-    "rating": 0
+    "rating": 3,
+    "readStatus": "Прочитано"
   },
   {
     "id": 15,

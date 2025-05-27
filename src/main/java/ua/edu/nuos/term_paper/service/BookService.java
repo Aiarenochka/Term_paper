@@ -71,7 +71,7 @@ public class BookService {
         }
 
         if (readStatus != null && !readStatus.isEmpty()) {
-            stream = stream.filter(book -> readStatus.equalsIgnoreCase(book.getReadStatus()));
+            stream = stream.filter(book -> readStatus.equals(book.getReadStatus()));
         }
 
         if (minRating != null) {
